@@ -3,6 +3,12 @@ class gameboard:
     board = [
         [[None]*3, [None]*3, [None]*3],
         [[None]*3, [None]*3, [None]*3],
+        [[None]*3, [None]*3, [None]*3],
+        [[None]*3, [None]*3, [None]*3],
+        [[None]*3, [None]*3, [None]*3],
+        [[None]*3, [None]*3, [None]*3],
+        [[None]*3, [None]*3, [None]*3],
+        [[None]*3, [None]*3, [None]*3],
         [[None]*3, [None]*3, [None]*3]
     ]
 
