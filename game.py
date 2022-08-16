@@ -7,11 +7,13 @@ from game import *
 
 
 class game:                
-     #Initialize the game
-    global screen
+    global screen, current_player
+
+    #Initialize the game
     pygame.init()
     screen = pygame.display.set_mode((width, height))
-    
+    current_player = 0
+
     def __init__(self):
         self.start()
 
@@ -36,9 +38,8 @@ class game:
         self.initiate_game_window()
 
         #Instantiating the two players. All assets tied to char 'x' | 'o'.
-        player_x = player("x")
-        player_o = player("o")
-
+        players = (player("x"), player("o"))
+        
         #Main Game Loop
         is_running = True
         while is_running:
@@ -47,6 +48,14 @@ class game:
                 if event.type == pygame.QUIT:
                     is_running = False    
                 elif event.type == pygame.MOUSEBUTTONDOWN:
-                    #TESTING: Using player O for now. Later, change this to alternate players.
-                    player_o.user_click(screen)            
+                    players[current_player].user_click(screen)
+                    game.switch_player()
             pygame.display.update()
+
+    def switch_player():
+        global current_player
+        if current_player == 0:
+            current_player = 1
+        else:
+            current_player = 0 
+    

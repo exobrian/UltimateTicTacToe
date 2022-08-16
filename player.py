@@ -14,7 +14,7 @@ class player:
     def user_click(self, screen):
         pos_x, pos_y = pygame.mouse.get_pos()
         self.draw_move(screen, pos_x, pos_y)
-
+        #player.switch_player(current_player)
         #Need to check boundaries
         #Can't go past boundaries or else icon will not show
         #Also, realise that each board is the same coordinates except adding (n-1)*240. 
