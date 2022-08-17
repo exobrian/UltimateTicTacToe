@@ -15,9 +15,6 @@ class Player:
     def user_click(self, screen, game_board):
         pos_x, pos_y = pygame.mouse.get_pos()
         self.draw_move(screen, pos_x, pos_y, game_board)
-        #Player.switch_player(current_player)
-        #Need to check boundaries
-        #Can't go past boundaries or else icon will not show
         #Also, realise that each board is the same coordinates except adding (n-1)*240. 
         ##i.e. x axis of first square of board[1,1] is [0,80]. x axis of first square of board[2,1] is [240,320]
     
@@ -40,19 +37,16 @@ class Player:
         #This calculates the index for which square in the inner square the user clicked in by modding the inner square out, then finding
         #which smallest square the remainder falls in. 
         inner_move_index = self.get_move_index(pos_x, pos_y)
-
-        game_board.check_entry(inner_square_index, inner_move_index, game_board)
-
-        #Drawing the icon on the board by first find the beginning location of the square then offsetting by the inner square location
-        pos_x_new = inner_square_index[0] * scale_factor + inner_move_index[0]
-        pos_y_new = inner_square_index[1] * scale_factor + inner_move_index[1]
-
-        screen.blit(self.icon, (pos_x_new, pos_y_new))
+        
+        if game_board.update_board(inner_square_index[2], inner_move_index[0], inner_move_index[1], self.icon, game_board):            
+            #Drawing the icon on the board by first find the beginning location of the square then offsetting by the inner square location
+            pos_x_new = inner_square_index[0] * scale_factor + inner_move_index[0]
+            pos_y_new = inner_square_index[1] * scale_factor + inner_move_index[1]
+            screen.blit(self.icon, (pos_x_new, pos_y_new))
 
     def fill_board(self, pos_x, pos_y, game_board):
         square_index = self.get_square_index(pos_x, pos_y)
         move_index = self.get_move_index(pos_x, pos_y)
-
     
     def switch_player():
         global current_player

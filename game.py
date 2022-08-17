@@ -49,7 +49,6 @@ class Game:
                     is_running = False    
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     players[Player.get_current_player()].user_click(screen, game_board)
-                    Player.switch_player()
             pygame.display.update()
 
     
