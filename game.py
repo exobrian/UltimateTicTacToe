@@ -6,13 +6,12 @@ from debug import *
 from game import *
 
 
-class game:                
-    global screen, current_player
+class Game:                
+    global screen
 
-    #Initialize the game
+    #Initialize the Game
     pygame.init()
     screen = pygame.display.set_mode((width, height))
-    current_player = 0
 
     def __init__(self):
         self.start()
@@ -23,7 +22,7 @@ class game:
         pygame.display.set_icon(icon)
         screen.fill(background_color_light)  
         
-        #Drawing gameboard grid
+        #Drawing GameBoard grid
         #These are for the inner grid lines. We'll use the default initial line color here
         for line_i in [1,2,4,5,7,8]:
             pygame.draw.line(screen, line_color_light, (line_i * width / 9, 0), (line_i * width / 9, height), 7)        
@@ -38,24 +37,20 @@ class game:
         self.initiate_game_window()
 
         #Instantiating the two players. All assets tied to char 'x' | 'o'.
-        players = (player("x"), player("o"))
+        players = (Player("x"), Player("o"))
+        game_board = GameBoard()
         
         #Main Game Loop
         is_running = True
         while is_running:
             for event in pygame.event.get():
-                #Check for ending the game
+                #Check for ending the Game
                 if event.type == pygame.QUIT:
                     is_running = False    
                 elif event.type == pygame.MOUSEBUTTONDOWN:
-                    players[current_player].user_click(screen)
-                    game.switch_player()
+                    players[Player.get_current_player()].user_click(screen, game_board)
+                    Player.switch_player()
             pygame.display.update()
 
-    def switch_player():
-        global current_player
-        if current_player == 0:
-            current_player = 1
-        else:
-            current_player = 0 
+    
     

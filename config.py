@@ -1,10 +1,11 @@
 #global variables to be shared
 is_running = True
+current_player = 0
 
 #default icon size
 icon_size = (64,64)
 
-#Screen Resolution: main game will be square, but add more lines for stats/score etc.
+#Screen Resolution: main Game will be square, but add more lines for stats/score etc.
 height = icon_size[0] * 9
 width = icon_size[1] * 9    
 
