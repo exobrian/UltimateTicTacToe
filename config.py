@@ -20,4 +20,8 @@ background_color_light = (125,125,125)
 #Initial line_color
 line_color_light = (200,200,200)
 line_color_dark = (50,50,50)
+line_width = 7
+
+#Game win color
+line_color_win = (100,0,0)
 

@@ -38,11 +38,12 @@ class Player:
         #which smallest square the remainder falls in. 
         inner_move_index = self.get_move_index(pos_x, pos_y)
         
-        if game_board.update_board(inner_square_index[2], inner_move_index[0], inner_move_index[1], self.icon, game_board):            
+        if game_board.update_board(inner_square_index[2], inner_move_index[0], inner_move_index[1], self.type, game_board):            
             #Drawing the icon on the board by first find the beginning location of the square then offsetting by the inner square location
             pos_x_new = inner_square_index[0] * scale_factor + inner_move_index[0]
             pos_y_new = inner_square_index[1] * scale_factor + inner_move_index[1]
             screen.blit(self.icon, (pos_x_new, pos_y_new))
+            game_board.end_game_check_inner(int(inner_square_index[2]))
 
     def fill_board(self, pos_x, pos_y, game_board):
         square_index = self.get_square_index(pos_x, pos_y)
