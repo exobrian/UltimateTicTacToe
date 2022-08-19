@@ -7,6 +7,7 @@ import sys
 class GameBoard:
     global winner
     winner = None
+
     def __init__(self):   
         #Create nine 3x3 boards. Each inner square is indexed by its ordinal number.
         #board[ordinal square][column][row]
@@ -41,7 +42,6 @@ class GameBoard:
         for row in range(0,3):
             if (self.board[inner_square_ordinal][row][0] == self.board[inner_square_ordinal][row][1]== self.board[inner_square_ordinal][row][2]) and (self.board[inner_square_ordinal][row][0] is not None):
                 #pygame.draw.line(Game.get_screen(), line_color_win, (0,0), (720,720))
-                winner = Player.get_current_player()
                 print("PLAYER " + str(winner) + " IS THE WINNER!")
                 sys.exit()
                 break
@@ -49,15 +49,13 @@ class GameBoard:
         for col in range(0,3):
             if (self.board[inner_square_ordinal][0][col] == self.board[inner_square_ordinal][1][col]== self.board[inner_square_ordinal][2][col]) and (self.board[inner_square_ordinal][0][col] is not None):
                 #pygame.draw.line(Game.get_screen(), line_color_win, (0,0), (720,720))
-                winner = Player.get_current_player()
                 print("PLAYER " + str(winner) + " IS THE WINNER!")
                 sys.exit()
                 break
         #Check diagonals for winner
-        if (self.board[inner_square_ordinal][0][0] == self.board[inner_square_ordinal][1][1] == self.board[inner_square_ordinal][2][2] or (self.board[inner_square_ordinal][2][0] == self.board[inner_square_ordinal][1][1] == self.board[inner_square_ordinal][0][2]) and self.board[inner_square_ordinal][1][1] is not None):
+        if ((self.board[inner_square_ordinal][0][0] == self.board[inner_square_ordinal][1][1] == self.board[inner_square_ordinal][2][2] or (self.board[inner_square_ordinal][2][0] == self.board[inner_square_ordinal][1][1] == self.board[inner_square_ordinal][0][2])) and self.board[inner_square_ordinal][1][1] is not None):
             #pygame.draw.line(Game.get_screen(), line_color_win, (0,0), (720,720))
-            winner = Player.get_current_player()
-            print("PLAYER " + str(winner) + " IS THE WINNER!")
+            #print("PLAYER " + str(winner) + " IS THE WINNER!")
             sys.exit()
         if winner is None:
             print("No winner yet")

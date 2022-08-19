@@ -1,8 +1,11 @@
 import pygame
 from config import *
 from gameboard import *
+from game import *
 
 class Player:
+    global players
+
     def __init__(self, type):
         self.type = type
         self.icon_location = ".\images\icon_" + self.type + ".png"    
@@ -49,6 +52,7 @@ class Player:
         square_index = self.get_square_index(pos_x, pos_y)
         move_index = self.get_move_index(pos_x, pos_y)
     
+    @staticmethod
     def switch_player():
         global current_player
         if current_player == 0:
@@ -56,6 +60,6 @@ class Player:
         else:
             current_player = 0
 
+    @staticmethod
     def get_current_player():
-        global current_player
         return current_player

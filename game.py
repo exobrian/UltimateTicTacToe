@@ -3,12 +3,11 @@ from config import *
 from gameboard import *
 from player import *
 from debug import *
-from game import *
 import sys
 
 
 class Game:                
-    global screen
+    global screen, players
 
     #Initialize the Game
     pygame.init()
@@ -36,6 +35,7 @@ class Game:
 
     def start(self):
         self.initiate_game_window()
+        global players
 
         #Instantiating the two players. All assets tied to char 'x' | 'o'.
         players = (Player("x"), Player("o"))
@@ -53,5 +53,10 @@ class Game:
                     players[Player.get_current_player()].user_click(screen, game_board)
             pygame.display.update()
 
+    @staticmethod
     def get_screen():
         return screen
+
+    @staticmethod
+    def get_players():
+        return players
