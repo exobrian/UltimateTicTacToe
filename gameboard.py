@@ -1,4 +1,3 @@
-from importlib.machinery import WindowsRegistryFinder
 from config import *
 from player import *
 from game import *
@@ -23,21 +22,27 @@ class Board:
         else:
             return False
 
-    def win_check_board(self):
+    def win_check_board(self, player):
+        global winner
         #Check rows for winner
         for row in range(0,3):
             if (self.board[row][0] == self.board[row][1]== self.board[row][2]) and (self.board[row][0] is not None):
                 #pygame.draw.line(Game.get_screen(), line_color_win, (0,0), (720,720))
-                #print("PLAYER " + str(GameBoard.get_winner()) + " IS THE WINNER!")
+                winner = player.type.upper()
+                print("PLAYER " + winner + " IS THE WINNER!")
                 sys.exit()
                 break
         #Check cols for winner
         for col in range(0,3):
             if (self.board[0][col] == self.board[1][col]== self.board[2][col]) and (self.board[0][col] is not None):
+                winner = player.type.upper()
+                print("PLAYER " + winner + " IS THE WINNER!")
                 sys.exit()
                 break
         #Check diagonals for winner
         if (((self.board[0][0] == self.board[1][1] == self.board[2][2]) or (self.board[2][0] == self.board[1][1] == self.board[0][2])) and self.board[1][1] is not None):
+            winner = player.type.upper()
+            print("PLAYER " + winner + " IS THE WINNER!")
             sys.exit()
         if winner is None:
             print("No winner yet")
@@ -55,7 +60,6 @@ class GameBoard(Board):
         inner_board = self.get_board(int(inner_square_ordinal))
         return inner_board.update_board(inner_move_row, inner_move_col, player_type)
 
-        
     def print_board(self):
         for square in range(0,8):
             print(self.board[square])

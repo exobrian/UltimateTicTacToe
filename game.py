@@ -5,7 +5,6 @@ from player import *
 from debug import *
 import sys
 
-
 class Game:                
     global screen, players
     #Instantiating the two players. All assets tied to char 'x' | 'o'.
@@ -37,8 +36,6 @@ class Game:
 
     def start(self):
         self.initiate_game_window()
-        global players
-
         game_board = GameBoard()
         
         #Main Game Loop
@@ -57,6 +54,4 @@ class Game:
     def get_screen():
         return screen
 
-    @staticmethod
-    def get_players():
-        print("It worked")
+    

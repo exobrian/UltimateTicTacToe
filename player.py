@@ -43,7 +43,7 @@ class Player:
             pos_x_new = inner_square_index[0] * scale_factor + inner_move_index[0]
             pos_y_new = inner_square_index[1] * scale_factor + inner_move_index[1]
             screen.blit(self.icon, (pos_x_new, pos_y_new))
-            game_board.get_board(int(inner_square_index[2])).win_check_board()
+            game_board.get_board(int(inner_square_index[2])).win_check_board(self)
     
     @staticmethod
     def switch_player():
