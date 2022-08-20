@@ -4,66 +4,66 @@ from player import *
 from game import *
 import sys
 
-class GameBoard:
+class Board:
     global winner
     winner = None
 
-    def __init__(self):   
-        #Create nine 3x3 boards. Each inner square is indexed by its ordinal number.
-        #board[ordinal square][column][row]
-        self.board = [
-            [[None]*3, [None]*3, [None]*3],
-            [[None]*3, [None]*3, [None]*3],
-            [[None]*3, [None]*3, [None]*3],
-            [[None]*3, [None]*3, [None]*3],
-            [[None]*3, [None]*3, [None]*3],
-            [[None]*3, [None]*3, [None]*3],
-            [[None]*3, [None]*3, [None]*3],
-            [[None]*3, [None]*3, [None]*3],
-            [[None]*3, [None]*3, [None]*3]
-        ]
-    
-    def update_board(self, inner_square_ordinal, inner_move_row, inner_move_col, player_type, game_board):
+    def __init__(self):
+        self.board = [[None]*3, [None]*3, [None]*3]
+
+    def update_board(self, inner_move_row, inner_move_col, player_type):
         #Note: Due to board being a list of lists, the row and columns have been transposed. What comes in as row is now col.
-        index1 = int(inner_square_ordinal)  #index for inner square
-        index2 = int(inner_move_col / icon_size[0]) #index for col of inner square: inner_move_row is the x coordinate of space
-        index3 = int(inner_move_row / icon_size[0]) #index for row of inner square: inner_move_col is the y coordinate of space
-        if game_board.board[index1][index2][index3] is None:
-            game_board.board[index1][index2][index3] = player_type
-            print(index1, index2, index3)
+        index1 = int(inner_move_col / icon_size[0]) #index for col of inner square: inner_move_row is the x coordinate of space
+        index2 = int(inner_move_row / icon_size[0]) #index for row of inner square: inner_move_col is the y coordinate of space
+        if self.board[index1][index2] is None:
+            self.board[index1][index2] = player_type
             Player.switch_player()
             return True
         else:
             return False
 
-    def end_game_check_inner(self, inner_square_ordinal):
-        global winner
+    def win_check_board(self):
         #Check rows for winner
         for row in range(0,3):
-            if (self.board[inner_square_ordinal][row][0] == self.board[inner_square_ordinal][row][1]== self.board[inner_square_ordinal][row][2]) and (self.board[inner_square_ordinal][row][0] is not None):
+            if (self.board[row][0] == self.board[row][1]== self.board[row][2]) and (self.board[row][0] is not None):
                 #pygame.draw.line(Game.get_screen(), line_color_win, (0,0), (720,720))
-                print("PLAYER " + str(winner) + " IS THE WINNER!")
+                #print("PLAYER " + str(GameBoard.get_winner()) + " IS THE WINNER!")
                 sys.exit()
                 break
         #Check cols for winner
         for col in range(0,3):
-            if (self.board[inner_square_ordinal][0][col] == self.board[inner_square_ordinal][1][col]== self.board[inner_square_ordinal][2][col]) and (self.board[inner_square_ordinal][0][col] is not None):
-                #pygame.draw.line(Game.get_screen(), line_color_win, (0,0), (720,720))
-                print("PLAYER " + str(winner) + " IS THE WINNER!")
+            if (self.board[0][col] == self.board[1][col]== self.board[2][col]) and (self.board[0][col] is not None):
                 sys.exit()
                 break
         #Check diagonals for winner
-        if ((self.board[inner_square_ordinal][0][0] == self.board[inner_square_ordinal][1][1] == self.board[inner_square_ordinal][2][2] or (self.board[inner_square_ordinal][2][0] == self.board[inner_square_ordinal][1][1] == self.board[inner_square_ordinal][0][2])) and self.board[inner_square_ordinal][1][1] is not None):
-            #pygame.draw.line(Game.get_screen(), line_color_win, (0,0), (720,720))
-            #print("PLAYER " + str(winner) + " IS THE WINNER!")
+        if (((self.board[0][0] == self.board[1][1] == self.board[2][2]) or (self.board[2][0] == self.board[1][1] == self.board[0][2])) and self.board[1][1] is not None):
             sys.exit()
         if winner is None:
             print("No winner yet")
 
+
+
+
+class GameBoard(Board):
+
+    def __init__(self):   
+        #Create nine 3x3 boards. Each inner square is indexed by its ordinal number.
+        #board[column][row]
+        self.gameboard = []
+        for i in range(0,9):
+            temp = Board()
+            self.gameboard.append(temp)
+    
+    def update_game_board(self, inner_square_ordinal, inner_move_row, inner_move_col, player_type):
+        inner_board = self.get_board(int(inner_square_ordinal))
+        if inner_board.update_board(inner_move_row, inner_move_col, player_type):
+            return True
+        else:
+            return False
+        
     def print_board(self):
         for square in range(0,8):
             print(self.board[square])
-    
-    def get_winner():
-        global winner
-        return winner
+
+    def get_board(self, inner_square_ordinal):
+        return self.gameboard[inner_square_ordinal]

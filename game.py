@@ -8,6 +8,8 @@ import sys
 
 class Game:                
     global screen, players
+    #Instantiating the two players. All assets tied to char 'x' | 'o'.
+    players = (Player("x"), Player("o"))
 
     #Initialize the Game
     pygame.init()
@@ -37,8 +39,6 @@ class Game:
         self.initiate_game_window()
         global players
 
-        #Instantiating the two players. All assets tied to char 'x' | 'o'.
-        players = (Player("x"), Player("o"))
         game_board = GameBoard()
         
         #Main Game Loop
@@ -59,4 +59,4 @@ class Game:
 
     @staticmethod
     def get_players():
-        return players
+        print("It worked")
