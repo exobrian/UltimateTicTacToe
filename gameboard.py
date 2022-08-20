@@ -53,10 +53,8 @@ class GameBoard(Board):
     
     def update_game_board(self, inner_square_ordinal, inner_move_row, inner_move_col, player_type):
         inner_board = self.get_board(int(inner_square_ordinal))
-        if inner_board.update_board(inner_move_row, inner_move_col, player_type):
-            return True
-        else:
-            return False
+        return inner_board.update_board(inner_move_row, inner_move_col, player_type)
+
         
     def print_board(self):
         for square in range(0,8):
