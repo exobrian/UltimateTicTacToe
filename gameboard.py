@@ -5,6 +5,7 @@ from game import *
 import sys
 
 class Board:
+    #Class for Smaller 3x3 square tic tac toe board
     global winner
     winner = None
 
@@ -41,13 +42,9 @@ class Board:
         if winner is None:
             print("No winner yet")
 
-
-
-
 class GameBoard(Board):
-
     def __init__(self):   
-        #Create nine 3x3 boards. Each inner square is indexed by its ordinal number.
+        #Create nine of smaller 3x3 boards. Each inner square is indexed by its ordinal number.
         #board[column][row]
         self.gameboard = []
         for i in range(0,9):
