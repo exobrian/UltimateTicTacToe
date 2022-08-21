@@ -2,7 +2,7 @@
 is_running = True
 current_player = 0
 
-#Screen Resolution: main Game will be square, but add more lines for stats/score etc.
+#Screen Resolution: Game will be a large square. For now, resolutions are hardcoded but may want to scale this for users.
 square_width = 64
 height = square_width * 9
 width = square_width * 9
@@ -23,5 +23,5 @@ line_color_dark = (50,50,50)
 line_width = 7
 
 #Game win color
-line_color_win = (100,0,0)
+line_color_win = [(100,0,0), (0,0,100)]
 line_width_win = 7
