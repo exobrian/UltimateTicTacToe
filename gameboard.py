@@ -21,7 +21,7 @@ class Board:
         else:
             return False
 
-    def win_check_board(self, player, screen, inner_square_index):
+    def win_check_board(self, player, screen, inner_square_index, game_board):
         #Pygame drawing: first coordinate to second.
         global winner
         #Check rows for winner
@@ -31,12 +31,7 @@ class Board:
                 draw_x_to = square_width*3 + inner_square_index[0]*square_width*3
                 draw_y_from = inner_square_index[1]*square_width*3 + row*square_width + square_width/2
                 draw_y_to = inner_square_index[1]*square_width*3 + row*square_width + square_width/2
-                print(str(draw_x_from) + ", " + str(draw_y_from) + " to " + str(draw_x_to) + ", " + str(draw_y_to))
-
-                pygame.draw.line(screen, line_color_win, (draw_x_from, draw_y_from), (draw_x_to, draw_y_to), width=line_width_win)
                 winner = player.type.upper()
-                print("PLAYER " + winner + " IS THE WINNER!")
-                #sys.exit()
                 break
         #Check cols for winner
         for col in range(0,3):
@@ -45,12 +40,7 @@ class Board:
                 draw_x_to = inner_square_index[0]*square_width*3 + col*square_width + square_width/2
                 draw_y_from = inner_square_index[1]*square_width*3
                 draw_y_to = inner_square_index[1]*square_width*3 + square_width*3
-                print(str(draw_x_from) + ", " + str(draw_y_from) + " to " + str(draw_x_to) + ", " + str(draw_y_to))
-
-                pygame.draw.line(screen, line_color_win, (draw_x_from, draw_y_from), (draw_x_to, draw_y_to), width=line_width_win)
                 winner = player.type.upper()
-                print("PLAYER " + winner + " IS THE WINNER!")
-                #sys.exit()
                 break
         #Check diagonals for winner
         if (((self.board[0][0] == self.board[1][1] == self.board[2][2]) or (self.board[2][0] == self.board[1][1] == self.board[0][2])) and self.board[1][1] is not None):
@@ -64,29 +54,39 @@ class Board:
                 draw_x_to = inner_square_index[0]*square_width*3
                 draw_y_from = inner_square_index[1]*square_width*3
                 draw_y_to = inner_square_index[1]*square_width*3 + square_width*3
-            pygame.draw.line(screen, line_color_win, (draw_x_from, draw_y_from), (draw_x_to, draw_y_to), width=line_width_win)
             winner = player.type.upper()
-            print("PLAYER " + winner + " IS THE WINNER!")
-            #sys.exit()
-        if winner is None:
-            print("No winner yet")
+
+        #If there is a winner in the inner squares, we'll track it so no one else can win it again
+        if winner is not None:
+            print("PLAYER " + winner + " WINS SQUARE " + str(int(inner_square_index[2]) + 1) + "!")
+            game_board.outer_board.board[inner_square_index[0]][inner_square_index[1]] = winner
+            pygame.draw.line(screen, line_color_win, (draw_x_from, draw_y_from), (draw_x_to, draw_y_to), width=line_width_win)
+            game_board.outer_board.print_board()
+
+        #Reset winner of inner square
+        winner = None
+    def print_board(self):
+        for row in range(0,3):
+            print(self.board[row])
+
+    
+    #def draw_winner(self):
+
 
 class GameBoard(Board):
+
     def __init__(self):   
         #Create nine of smaller 3x3 boards. Each inner square is indexed by its ordinal number.
         #board[column][col]
+        self.outer_board = Board()
         self.gameboard = []
         for i in range(0,9):
             temp = Board()
             self.gameboard.append(temp)
-    
+
     def update_game_board(self, inner_square_ordinal, inner_move_row, inner_move_col, player_type):
         inner_board = self.get_board(int(inner_square_ordinal))
         return inner_board.update_board(inner_move_row, inner_move_col, player_type)
-
-    def print_board(self):
-        for square in range(0,8):
-            print(self.board[square])
 
     def get_board(self, inner_square_ordinal):
         return self.gameboard[inner_square_ordinal]

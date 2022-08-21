@@ -24,12 +24,12 @@ class Player:
         inner_square_row = pos_x // scale_factor
         inner_square_col = pos_y // scale_factor
         inner_square_ordinal = inner_square_row * 3 + inner_square_col
-        return inner_square_row, inner_square_col, inner_square_ordinal
+        return int(inner_square_row), int(inner_square_col), int(inner_square_ordinal)
 
     def get_move_index(self, pos_x, pos_y):
         inner_move_row = ((pos_x % scale_factor) // (scale_factor / 3)) * (scale_factor / 3)
         inner_move_col = ((pos_y % scale_factor) // (scale_factor / 3)) * (scale_factor / 3)
-        return inner_move_row, inner_move_col
+        return int(inner_move_row), int(inner_move_col)
     
     def draw_move(self, screen, pos_x, pos_y, game_board):
         #This calculates the index for which inner square the user clicked in by int dividing how many pixels wide each square is
@@ -44,7 +44,7 @@ class Player:
             pos_x_new = inner_square_index[0] * scale_factor + inner_move_index[0]
             pos_y_new = inner_square_index[1] * scale_factor + inner_move_index[1]
             screen.blit(self.icon, (pos_x_new, pos_y_new))
-            game_board.get_board(int(inner_square_index[2])).win_check_board(self, screen, inner_square_index)
+            game_board.get_board(inner_square_index[2]).win_check_board(self, screen, inner_square_index, game_board)
     
     @staticmethod
     def switch_player():
