@@ -54,9 +54,20 @@ class Board:
                 break
         #Check diagonals for winner
         if (((self.board[0][0] == self.board[1][1] == self.board[2][2]) or (self.board[2][0] == self.board[1][1] == self.board[0][2])) and self.board[1][1] is not None):
+            if self.board[0][0] == self.board[1][1] == self.board[2][2]:
+                draw_x_from = inner_square_index[0]*square_width*3
+                draw_x_to = inner_square_index[0]*square_width*3 + square_width*3
+                draw_y_from = inner_square_index[1]*square_width*3
+                draw_y_to = inner_square_index[1]*square_width*3 + square_width*3
+            else:
+                draw_x_from = inner_square_index[0]*square_width*3 + square_width*3
+                draw_x_to = inner_square_index[0]*square_width*3
+                draw_y_from = inner_square_index[1]*square_width*3
+                draw_y_to = inner_square_index[1]*square_width*3 + square_width*3
+            pygame.draw.line(screen, line_color_win, (draw_x_from, draw_y_from), (draw_x_to, draw_y_to), width=line_width_win)
             winner = player.type.upper()
             print("PLAYER " + winner + " IS THE WINNER!")
-            sys.exit()
+            #sys.exit()
         if winner is None:
             print("No winner yet")
 
