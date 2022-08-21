@@ -38,12 +38,13 @@ class Player:
         #This calculates the index for which square in the inner square the user clicked in by modding the inner square out, then finding
         #which smallest square the remainder falls in. 
         inner_move_index = self.get_move_index(pos_x, pos_y)
-        if game_board.update_game_board(inner_square_index[2], inner_move_index[0], inner_move_index[1], self.type):            
-            #Drawing the icon on the board by first find the beginning location of the square then offsetting by the inner square location
+        if game_board.update_game_board(inner_square_index[2], inner_move_index[0], inner_move_index[1], self.type): 
+            #First call update to check if smaller board at inner_square_index[2] space index[0],index[1] is empty. If not, place player type in it.           
+            #Then draw the icon on the board by first find the beginning location of the square then offsetting by the inner square location
             pos_x_new = inner_square_index[0] * scale_factor + inner_move_index[0]
             pos_y_new = inner_square_index[1] * scale_factor + inner_move_index[1]
             screen.blit(self.icon, (pos_x_new, pos_y_new))
-            game_board.get_board(int(inner_square_index[2])).win_check_board(self)
+            game_board.get_board(int(inner_square_index[2])).win_check_board(self, screen, inner_square_index)
     
     @staticmethod
     def switch_player():
