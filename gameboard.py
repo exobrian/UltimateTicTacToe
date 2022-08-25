@@ -13,8 +13,8 @@ class Board:
 
     def update_board(self, inner_move_row, inner_move_col, player_type):
         #Note: Due to board being a list of lists, the row and columns have been transposed. What comes in as row is the col.
-        index1 = int(inner_move_col / icon_size[0]) #index for col of inner square: inner_move_row is the x coordinate of space
-        index2 = int(inner_move_row / icon_size[0]) #index for row of inner square: inner_move_col is the y coordinate of space
+        index1 = int(inner_move_row / icon_size[0]) #index for col of inner square: inner_move_row is the x coordinate of space
+        index2 = int(inner_move_col / icon_size[0]) #index for row of inner square: inner_move_col is the y coordinate of space
         if self.board[index1][index2] is None:
             self.board[index1][index2] = player_type
             return True
