@@ -21,14 +21,14 @@ class Player:
     
     def get_square_index(self, pos_x, pos_y):
         #int returned by dividing by scale_factor gives row/column index for inner square        
-        inner_square_row = pos_x // scale_factor
-        inner_square_col = pos_y // scale_factor
+        inner_square_row = pos_y // scale_factor
+        inner_square_col = pos_x // scale_factor
         inner_square_ordinal = inner_square_row * 3 + inner_square_col
         return int(inner_square_row), int(inner_square_col), int(inner_square_ordinal)
 
     def get_move_index(self, pos_x, pos_y):
-        inner_move_row = ((pos_x % scale_factor) // (scale_factor / 3)) * (scale_factor / 3)
-        inner_move_col = ((pos_y % scale_factor) // (scale_factor / 3)) * (scale_factor / 3)
+        inner_move_row = ((pos_y % scale_factor) // (scale_factor / 3)) * (scale_factor / 3)
+        inner_move_col = ((pos_x % scale_factor) // (scale_factor / 3)) * (scale_factor / 3)
         return int(inner_move_row), int(inner_move_col)
     
     def draw_move(self, screen, pos_x, pos_y, game_board):
@@ -41,8 +41,8 @@ class Player:
         if game_board.update_game_board(inner_square_index[2], inner_move_index[0], inner_move_index[1], self.type): 
             #First call update to check if smaller board at inner_square_index[2] space index[0],index[1] is empty. If not, place player type in it.           
             #Then draw the icon on the board by first find the beginning location of the square then offsetting by the inner square location
-            pos_x_new = inner_square_index[0] * scale_factor + inner_move_index[0]
-            pos_y_new = inner_square_index[1] * scale_factor + inner_move_index[1]
+            pos_y_new = inner_square_index[0] * scale_factor + inner_move_index[0]
+            pos_x_new = inner_square_index[1] * scale_factor + inner_move_index[1]
             screen.blit(self.icon, (pos_x_new, pos_y_new))
             game_board.get_board(inner_square_index[2]).win_check_board(self, screen, inner_square_index, game_board)
     

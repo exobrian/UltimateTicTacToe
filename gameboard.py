@@ -24,39 +24,42 @@ class Board:
     def win_check_board(self, player, screen, inner_square_index, game_board):
         global winner
         #Need to make sure there's not already a winner before each loop. Otherwise there'd be redundant checks
+        #index[0] = row
+        #index[1] = col
+
         #Check rows for winner
         if (winner is None):
             for row in range(0,3):
                 if (self.board[row][0] == self.board[row][1]== self.board[row][2]) and (self.board[row][0] is not None):
-                    draw_x_from = inner_square_index[0]*square_width*3
-                    draw_x_to = square_width*3 + inner_square_index[0]*square_width*3
-                    draw_y_from = inner_square_index[1]*square_width*3 + row*square_width + square_width/2
-                    draw_y_to = inner_square_index[1]*square_width*3 + row*square_width + square_width/2
+                    draw_x_from = inner_square_index[1]*square_width*3
+                    draw_x_to = inner_square_index[1]*square_width*3 + square_width*3
+                    draw_y_from = inner_square_index[0]*square_width*3 + row*square_width + square_width/2
+                    draw_y_to = inner_square_index[0]*square_width*3 + row*square_width + square_width/2
                     winner = player.type.upper()
                     break
         #Check cols for winner
         if (winner is None):
             for col in range(0,3):
                 if (self.board[0][col] == self.board[1][col]== self.board[2][col]) and (self.board[0][col] is not None):
-                    draw_x_from = inner_square_index[0]*square_width*3 + col*square_width + square_width/2
-                    draw_x_to = inner_square_index[0]*square_width*3 + col*square_width + square_width/2
-                    draw_y_from = inner_square_index[1]*square_width*3
-                    draw_y_to = inner_square_index[1]*square_width*3 + square_width*3
+                    draw_x_from = inner_square_index[1]*square_width*3 + col*square_width + square_width/2
+                    draw_x_to = inner_square_index[1]*square_width*3 + col*square_width + square_width/2
+                    draw_y_from = inner_square_index[0]*square_width*3
+                    draw_y_to = inner_square_index[0]*square_width*3 + square_width*3
                     winner = player.type.upper()
                     break
         #Check diagonals for winner
         if (winner is None):
             if (((self.board[0][0] == self.board[1][1] == self.board[2][2]) or (self.board[2][0] == self.board[1][1] == self.board[0][2])) and self.board[1][1] is not None):
                 if self.board[0][0] == self.board[1][1] == self.board[2][2]:
-                    draw_x_from = inner_square_index[0]*square_width*3
-                    draw_x_to = inner_square_index[0]*square_width*3 + square_width*3
-                    draw_y_from = inner_square_index[1]*square_width*3
-                    draw_y_to = inner_square_index[1]*square_width*3 + square_width*3
+                    draw_y_from = inner_square_index[0]*square_width*3
+                    draw_y_to = inner_square_index[0]*square_width*3 + square_width*3
+                    draw_x_from = inner_square_index[1]*square_width*3
+                    draw_x_to = inner_square_index[1]*square_width*3 + square_width*3
                 else:
-                    draw_x_from = inner_square_index[0]*square_width*3 + square_width*3
-                    draw_x_to = inner_square_index[0]*square_width*3
-                    draw_y_from = inner_square_index[1]*square_width*3
-                    draw_y_to = inner_square_index[1]*square_width*3 + square_width*3
+                    draw_y_from = inner_square_index[0]*square_width*3 + square_width*3
+                    draw_y_to = inner_square_index[0]*square_width*3
+                    draw_x_from = inner_square_index[1]*square_width*3
+                    draw_x_to = inner_square_index[1]*square_width*3 + square_width*3
                 winner = player.type.upper()
 
         #If there is a winner in the inner squares, we'll track it so no one else can win it again
@@ -72,36 +75,6 @@ class Board:
     def print_board(self):
         for row in range(0,3):
             print(self.board[row])
-'''
-    def win_check_row(self):
-        #Check rows for winner
-        for row in range(0,3):
-            if (self.board[row][0] == self.board[row][1]== self.board[row][2]) and (self.board[row][0] is not None):
-                #self.draw_hor()
-                return True
-            else:
-                return False
-
-    def win_check_col(self):
-        #Check cols for winner
-        for col in range(0,3):
-            if (self.board[0][col] == self.board[1][col]== self.board[2][col]) and (self.board[0][col] is not None):
-                #self.draw_vert()
-                return True
-            else:
-                return False
-
-    def win_check_diag(self):
-        if (((self.board[0][0] == self.board[1][1] == self.board[2][2]) or (self.board[2][0] == self.board[1][1] == self.board[0][2])) and self.board[1][1] is not None):
-            if self.board[0][0] == self.board[1][1] == self.board[2][2]:
-                #self.draw_diag(left)
-            else:
-                #self.draw_diag(right)
-            return True
-        return False
-
-    #def draw_winner(self):
-'''
 
 class GameBoard(Board):
 
