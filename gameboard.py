@@ -23,6 +23,9 @@ class Board:
 
     def win_check_board(self, player, screen, inner_square_index, game_board):
         global winner
+        global win_type
+        global win_index
+
         #Need to make sure there's not already a winner before each loop. Otherwise there'd be redundant checks
         #index[0] = row
         #index[1] = col
@@ -31,50 +34,84 @@ class Board:
         if (winner is None):
             for row in range(0,3):
                 if (self.board[row][0] == self.board[row][1]== self.board[row][2]) and (self.board[row][0] is not None):
-                    draw_x_from = inner_square_index[1]*square_width*3
-                    draw_x_to = inner_square_index[1]*square_width*3 + square_width*3
-                    draw_y_from = inner_square_index[0]*square_width*3 + row*square_width + square_width/2
-                    draw_y_to = inner_square_index[0]*square_width*3 + row*square_width + square_width/2
                     winner = player.type.upper()
+                    win_type = 'horizontal'
+                    win_index = row
                     break
         #Check cols for winner
         if (winner is None):
             for col in range(0,3):
                 if (self.board[0][col] == self.board[1][col]== self.board[2][col]) and (self.board[0][col] is not None):
-                    draw_x_from = inner_square_index[1]*square_width*3 + col*square_width + square_width/2
-                    draw_x_to = inner_square_index[1]*square_width*3 + col*square_width + square_width/2
-                    draw_y_from = inner_square_index[0]*square_width*3
-                    draw_y_to = inner_square_index[0]*square_width*3 + square_width*3
                     winner = player.type.upper()
+                    win_type = 'vertical'
+                    win_index = col
                     break
         #Check diagonals for winner
         if (winner is None):
-            if (((self.board[0][0] == self.board[1][1] == self.board[2][2]) or (self.board[2][0] == self.board[1][1] == self.board[0][2])) and self.board[1][1] is not None):
+            if self.board[1][1] is not None:
                 if self.board[0][0] == self.board[1][1] == self.board[2][2]:
-                    draw_y_from = inner_square_index[0]*square_width*3
-                    draw_y_to = inner_square_index[0]*square_width*3 + square_width*3
-                    draw_x_from = inner_square_index[1]*square_width*3
-                    draw_x_to = inner_square_index[1]*square_width*3 + square_width*3
-                else:
-                    draw_y_from = inner_square_index[0]*square_width*3 + square_width*3
-                    draw_y_to = inner_square_index[0]*square_width*3
-                    draw_x_from = inner_square_index[1]*square_width*3
-                    draw_x_to = inner_square_index[1]*square_width*3 + square_width*3
-                winner = player.type.upper()
+                    winner = player.type.upper()
+                    win_type = 'diagonal_topleft_to_bottomright'
+                elif self.board[2][0] == self.board[1][1] == self.board[0][2]:
+                    winner = player.type.upper()
+                    win_type = 'diagonal_topright_to_bottomleft'
+        #If still no winner, check for cat's game. Mark outer board as winner = NA.
+        if (winner is None):
+            count = 0
+            for row in range(0,3):
+                for col in range(0,3):
+                    if (self.board[row][col] is None):
+                        break
+                    count += 1
+            if count == 9:
+                winner = "NA"
 
         #If there is a winner in the inner squares, we'll track it so no one else can win it again
         if (winner is not None and game_board.outer_board.board[inner_square_index[0]][inner_square_index[1]] is None):
-            print("PLAYER " + winner + " WINS SQUARE " + str(int(inner_square_index[2]) + 1) + "!")
-            game_board.outer_board.board[inner_square_index[0]][inner_square_index[1]] = winner
-            pygame.draw.line(screen, line_color_win[Player.get_current_player()], (draw_x_from, draw_y_from), (draw_x_to, draw_y_to), width=line_width_win)
+            game_board.outer_board.board[inner_square_index[0]][inner_square_index[1]] = winner        
+            
+            if win_type is not None:
+                self.draw_winner_board(screen, inner_square_index, win_type)
+            
+            #debugging
+            print("PLAYER " + winner + " WINS SQUARE " + str(int(inner_square_index[2])) + "!")   
             game_board.outer_board.print_board()
 
         #Reset winner of inner square
         winner = None
+        win_index = None
+        win_type = None
 
     def print_board(self):
         for row in range(0,3):
             print(self.board[row])
+
+    def draw_winner_board(self, screen, inner_square_index, win_type):
+        global winner 
+        match win_type:
+            case 'horizontal':
+                draw_x_from = inner_square_index[1]*square_width*3
+                draw_x_to = inner_square_index[1]*square_width*3 + square_width*3
+                draw_y_from = inner_square_index[0]*square_width*3 + win_index*square_width + square_width/2
+                draw_y_to = inner_square_index[0]*square_width*3 + win_index*square_width + square_width/2
+            case 'vertical':
+                draw_x_from = inner_square_index[1]*square_width*3 + win_index*square_width + square_width/2
+                draw_x_to = inner_square_index[1]*square_width*3 + win_index*square_width + square_width/2
+                draw_y_from = inner_square_index[0]*square_width*3
+                draw_y_to = inner_square_index[0]*square_width*3 + square_width*3
+            case 'diagonal_topleft_to_bottomright':
+                draw_y_from = inner_square_index[0]*square_width*3
+                draw_y_to = inner_square_index[0]*square_width*3 + square_width*3
+                draw_x_from = inner_square_index[1]*square_width*3
+                draw_x_to = inner_square_index[1]*square_width*3 + square_width*3
+            case 'diagonal_topright_to_bottomleft':
+                draw_y_from = inner_square_index[0]*square_width*3 + square_width*3
+                draw_y_to = inner_square_index[0]*square_width*3
+                draw_x_from = inner_square_index[1]*square_width*3
+                draw_x_to = inner_square_index[1]*square_width*3 + square_width*3
+            case _:
+                return
+        pygame.draw.line(screen, line_color_win[Player.get_current_player()], (draw_x_from, draw_y_from), (draw_x_to, draw_y_to), width=line_width_win)
 
 class GameBoard(Board):
 
@@ -93,3 +130,7 @@ class GameBoard(Board):
 
     def get_board(self, inner_square_ordinal):
         return self.gameboard[inner_square_ordinal]
+
+    def win_check_game_board(self, player, screen, inner_square_index):
+
+        return super().win_check_board(player, screen, inner_square_index)
