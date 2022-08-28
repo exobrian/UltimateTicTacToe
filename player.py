@@ -33,9 +33,14 @@ class Player:
         inner_move_col = ((pos_x % scale_factor) // (scale_factor / 3)) * (scale_factor / 3)
         return int(inner_move_row), int(inner_move_col)
     
+    def is_valid_move(self, screen, pos_x, pos_y, game_board):
+        inner_square_index = self.get_square_index(pos_x, pos_y)
+        inner_move_index = self.get_move_index(pos_x, pos_y)
+        return game_board.update_game_board(inner_square_index[2], inner_move_index[0], inner_move_index[1], self.type)
+
     def draw_move(self, screen, pos_x, pos_y, game_board):
         #This calculates the index for which inner square the user clicked in by int dividing how many pixels wide each square is
-        inner_square_index = self.get_square_index(pos_x, pos_y)
+        inner_square_index = self.get_square_index(pos_x, pos_y)    #row, col, ordinal
 
         #This calculates the index for which square in the inner square the user clicked in by modding the inner square out, then finding
         #which smallest square the remainder falls in. 
@@ -48,9 +53,12 @@ class Player:
             screen.blit(self.icon, (pos_x_new, pos_y_new))
 
             if game_board.check_outer_board(inner_square_index[2]):
-                inner_board_win_check = game_board.get_board(inner_square_index[2]).win_check_board(self, screen, inner_square_index, game_board)
+                inner_board_win_check = game_board.get_board(inner_square_index[2]).win_check_board(self)
                 if (inner_board_win_check[0] is not None and inner_board_win_check[1] is not None):
+                    game_board.update_outer_board(inner_square_index[2], inner_board_win_check[0])
                     game_board.get_board(inner_square_index[2]).draw_winner_board(screen, inner_square_index, inner_board_win_check[1], inner_board_win_check[2])
+                    game_board.outer_board.print_board()
+            Player.switch_player()
 
     @staticmethod
     def switch_player():

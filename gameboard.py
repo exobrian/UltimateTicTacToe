@@ -6,27 +6,24 @@ import sys
 
 class Board:
     #Class for Smaller 3x3 square tic tac toe board
-    global winner
-    winner = None
-
+    #winner variable to track winner for each small board
+    
     def __init__(self):
         self.board = [[None]*3, [None]*3, [None]*3]
+        self.winner = None
+        win_type = None
 
     def update_board(self, inner_move_row, inner_move_col, player_type):
-        row = int(inner_move_row / icon_size[0]) #index for col of inner square: inner_move_row is the x coordinate of space
-        col = int(inner_move_col / icon_size[0]) #index for row of inner square: inner_move_col is the y coordinate of space
+        row = int(inner_move_row / icon_size[0]) #index for col of inner square: inner_move_row is the y coordinate of space
+        col = int(inner_move_col / icon_size[0]) #index for row of inner square: inner_move_col is the x coordinate of space
         if self.board[row][col] is None:
             self.board[row][col] = player_type
             return True
         else:
             return False
 
-    def win_check_board(self, player, screen, inner_square_index, game_board):
-        global winner
-        global win_type
-        global win_index
+    def win_check_board(self, player):
 
-        winner = None
         win_type = None
         win_index = None
 
@@ -35,32 +32,32 @@ class Board:
         #index[1] = col
 
         #Check rows for winner
-        if (winner is None):
+        if (self.winner is None):
             for row in range(0,3):
                 if (self.board[row][0] == self.board[row][1]== self.board[row][2]) and (self.board[row][0] is not None):
-                    winner = player.type.upper()
+                    self.winner = player.type.upper()
                     win_type = 'horizontal'
                     win_index = row
                     break
         #Check cols for winner
-        if (winner is None):
+        if (self.winner is None):
             for col in range(0,3):
                 if (self.board[0][col] == self.board[1][col]== self.board[2][col]) and (self.board[0][col] is not None):
-                    winner = player.type.upper()
+                    self.winner = player.type.upper()
                     win_type = 'vertical'
                     win_index = col
                     break
         #Check diagonals for winner
-        if (winner is None):
+        if (self.winner is None):
             if self.board[1][1] is not None:
                 if self.board[0][0] == self.board[1][1] == self.board[2][2]:
-                    winner = player.type.upper()
+                    self.winner = player.type.upper()
                     win_type = 'diagonal_topleft_to_bottomright'
                 elif self.board[2][0] == self.board[1][1] == self.board[0][2]:
-                    winner = player.type.upper()
+                    self.winner = player.type.upper()
                     win_type = 'diagonal_topright_to_bottomleft'
         #If still no winner, check for cat's game. Mark outer board as winner = NA.
-        if (winner is None):
+        if (self.winner is None):
             count = 0
             for row in range(0,3):
                 for col in range(0,3):
@@ -68,33 +65,16 @@ class Board:
                         break
                     count += 1
             if count == 9:
-                winner = "NA"
-        return winner, win_type, win_index
+                print("Cat's Game!")
+                self.winner = "NA"
+                win_type = "Cat's Game"
+        return self.winner, win_type, win_index
 
-
-    """
-        #If there is a winner in the inner squares, we'll track it so no one else can win it again
-        if (winner is not None and game_board.outer_board.board[inner_square_index[0]][inner_square_index[1]] is None):
-            game_board.outer_board.board[inner_square_index[0]][inner_square_index[1]] = winner        
-            
-            if win_type is not None:
-                self.draw_winner_board(screen, inner_square_index, win_type)
-            
-            #debugging
-            print("PLAYER " + winner + " WINS SQUARE " + str(int(inner_square_index[2])) + "!")   
-            game_board.outer_board.print_board()
-
-        #Reset winner of inner square
-        winner = None
-        win_index = None
-        win_type = None
-    """
     def print_board(self):
         for row in range(0,3):
             print(self.board[row])
 
     def draw_winner_board(self, screen, inner_square_index, win_type, win_index):
-        global winner 
         match win_type:
             case 'horizontal':
                 draw_x_from = inner_square_index[1]*square_width*3
@@ -119,7 +99,7 @@ class Board:
             case _:
                 return
         pygame.draw.line(screen, line_color_win[Player.get_current_player()], (draw_x_from, draw_y_from), (draw_x_to, draw_y_to), width=line_width_win)
-
+        
 class GameBoard(Board):
 
     def __init__(self):   
@@ -127,6 +107,8 @@ class GameBoard(Board):
         #board[column][col]
         self.outer_board = Board()
         self.gameboard = []
+        self.ultimate_winner = None
+
         for i in range(0,9):
             temp = Board()
             self.gameboard.append(temp)
@@ -141,12 +123,12 @@ class GameBoard(Board):
         if self.outer_board.board[row_index][col_index] is not None:
             return False
         else:
-            print(self.outer_board.board[row_index][col_index])
             return True
 
-    def update_outer_board(self, inner_square_index):
-        if (winner is not None and self.outer_board.board[inner_square_index[0]][inner_square_index[1]] is None):
-            self.outer_board.board[inner_square_index[0]][inner_square_index[1]] = winner  
+    def update_outer_board(self, inner_square_ordinal, winning_player):
+        row_index = int(inner_square_ordinal // 3)
+        col_index = int(inner_square_ordinal % 3)
+        self.outer_board.board[row_index][col_index] = winning_player
 
     def get_board(self, inner_square_ordinal):
         return self.gameboard[inner_square_ordinal]
