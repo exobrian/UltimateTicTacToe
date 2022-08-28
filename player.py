@@ -27,6 +27,8 @@ class Player:
         return int(inner_square_row), int(inner_square_col), int(inner_square_ordinal)
 
     def get_move_index(self, pos_x, pos_y):
+        #get coordinates for whatever square player clicks inside of
+        #scale_factor = width of inner tic tac toe (3 squares)
         inner_move_row = ((pos_y % scale_factor) // (scale_factor / 3)) * (scale_factor / 3)
         inner_move_col = ((pos_x % scale_factor) // (scale_factor / 3)) * (scale_factor / 3)
         return int(inner_move_row), int(inner_move_col)
@@ -44,8 +46,12 @@ class Player:
             pos_y_new = inner_square_index[0] * scale_factor + inner_move_index[0]
             pos_x_new = inner_square_index[1] * scale_factor + inner_move_index[1]
             screen.blit(self.icon, (pos_x_new, pos_y_new))
-            game_board.get_board(inner_square_index[2]).win_check_board(self, screen, inner_square_index, game_board)
-    
+
+            if game_board.check_outer_board(inner_square_index[2]):
+                inner_board_win_check = game_board.get_board(inner_square_index[2]).win_check_board(self, screen, inner_square_index, game_board)
+                if (inner_board_win_check[0] is not None and inner_board_win_check[1] is not None):
+                    game_board.get_board(inner_square_index[2]).draw_winner_board(screen, inner_square_index, inner_board_win_check[1], inner_board_win_check[2])
+
     @staticmethod
     def switch_player():
         global current_player
