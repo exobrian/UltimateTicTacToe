@@ -1,6 +1,9 @@
 #global variables to be shared
 is_running = True
 current_player = 0
+current_board = None
+prior_board = None
+is_running = True
 
 #Screen Resolution: Game will be a large square. For now, resolutions are hardcoded but may want to scale this for users.
 square_width = 64

@@ -11,11 +11,10 @@ class Board:
     def __init__(self):
         self.board = [[None]*3, [None]*3, [None]*3]
         self.winner = None
-        win_type = None
 
     def update_board(self, inner_move_row, inner_move_col, player_type):
-        row = int(inner_move_row / icon_size[0]) #index for col of inner square: inner_move_row is the y coordinate of space
-        col = int(inner_move_col / icon_size[0]) #index for row of inner square: inner_move_col is the x coordinate of space
+        row = int(inner_move_row / square_width) #index for col of inner square: inner_move_row is the y coordinate of space
+        col = int(inner_move_col / square_width) #index for row of inner square: inner_move_col is the x coordinate of space
         if self.board[row][col] is None:
             self.board[row][col] = player_type
             return True
@@ -65,7 +64,6 @@ class Board:
                         break
                     count += 1
             if count == 9:
-                print("Cat's Game!")
                 self.winner = "NA"
                 win_type = "Cat's Game"
         return self.winner, win_type, win_index
@@ -132,7 +130,3 @@ class GameBoard(Board):
 
     def get_board(self, inner_square_ordinal):
         return self.gameboard[inner_square_ordinal]
-
-    def win_check_game_board(self, player, screen, inner_square_index):
-
-        return super().win_check_board(player, screen, inner_square_index)
