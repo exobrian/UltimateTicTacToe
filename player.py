@@ -81,6 +81,7 @@ class Player:
                     #game_board.outer_board.print_board()
             if game_board.outer_board.win_check_board(self)[1] is not None and game_board.outer_board.win_check_board(self)[1] != "Cat's Game":
                 print("Player " + str(self.type) + " wins!!")
+                pygame.quit()
                 sys.exit()
             Player.switch_player()
 
