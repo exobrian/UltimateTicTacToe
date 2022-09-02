@@ -21,6 +21,7 @@ class Player:
 
     def user_click(self, screen, game_board):
         pos_x, pos_y = pygame.mouse.get_pos()
+        self.declare_winner(screen)
         self.draw_move(screen, pos_x, pos_y, game_board)
         #Also, realise that each board is the same coordinates except adding (n-1)*240. 
         ##i.e. x axis of first square of board[1,1] is [0,80]. x axis of first square of board[2,1] is [240,320]
@@ -55,7 +56,6 @@ class Player:
         #which smallest square the remainder falls in. 
         inner_move_index = self.get_move_index(pos_x, pos_y)
         current_board = inner_square_index[2]
-
         #first move can be anywhere; check if prior move is null first and set equal to pass next logical check
         if prior_board is None:
             prior_board = current_board
@@ -78,11 +78,11 @@ class Player:
                 if (inner_board_win_check[0] is not None and inner_board_win_check[1] is not None):
                     game_board.update_outer_board(inner_square_index[2], inner_board_win_check[0])
                     game_board.get_board(inner_square_index[2]).draw_winner_board(screen, inner_square_index, inner_board_win_check[1], inner_board_win_check[2])
-                    #game_board.outer_board.print_board()
             if game_board.outer_board.win_check_board(self)[1] is not None and game_board.outer_board.win_check_board(self)[1] != "Cat's Game":
                 print("Player " + str(self.type) + " wins!!")
-                pygame.quit()
-                sys.exit()
+                self.declare_winner(screen)
+                #pygame.quit()
+                #sys.exit()
             Player.switch_player()
 
     @staticmethod
@@ -100,3 +100,10 @@ class Player:
     @staticmethod
     def get_current_player():
         return current_player
+
+    def declare_winner(self, screen):
+        game_over_screen_location = ".\images\game_over_screen.png" 
+        game_over_screen = pygame.image.load(game_over_screen_location)
+        game_over_screen = pygame.transform.scale(game_over_screen, (scale_factor, scale_factor))
+        screen.blit(game_over_screen, (width/3, height/3))
+        pygame.display.update()

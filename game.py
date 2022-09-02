@@ -49,9 +49,3 @@ class Game:
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     players[Player.get_current_player()].user_click(screen, game_board)
             pygame.display.update()
-
-    @staticmethod
-    def get_screen():
-        return screen
-
-    
