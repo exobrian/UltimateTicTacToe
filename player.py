@@ -21,7 +21,6 @@ class Player:
 
     def user_click(self, screen, game_board):
         pos_x, pos_y = pygame.mouse.get_pos()
-        self.declare_winner(screen)
         self.draw_move(screen, pos_x, pos_y, game_board)
         #Also, realise that each board is the same coordinates except adding (n-1)*240. 
         ##i.e. x axis of first square of board[1,1] is [0,80]. x axis of first square of board[2,1] is [240,320]
