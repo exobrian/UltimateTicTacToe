@@ -27,6 +27,7 @@ Once a player has **won** an inner square, a colored line will indicate that tha
 <br>
 
 Play will continue until a player wins three inner squares that are connected in one single line.
+<br>
 ![Before Final Win](https://github.com/exobrian/UltimateTicTacToe/blob/win_check_break/images/tutorial-6.png?size=100)
 <br>
 
