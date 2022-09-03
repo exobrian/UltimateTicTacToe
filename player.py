@@ -55,8 +55,8 @@ class Player:
         #which smallest square the remainder falls in. 
         inner_move_index = self.get_move_index(pos_x, pos_y)
         current_board = inner_square_index[2]
-        #first move can be anywhere; check if prior move is null first and set equal to pass next logical check
-        if prior_board is None:
+        #first move can be anywhere or if the current inner square is full; check if prior move is null first and set equal to pass next logical check
+        if prior_board is None or not game_board.get_board(current_board).check_board_open():
             prior_board = current_board
 
         if (current_board == prior_board and game_board.update_game_board(inner_square_index[2], inner_move_index[0], inner_move_index[1], self.type)): 

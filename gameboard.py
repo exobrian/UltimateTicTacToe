@@ -68,6 +68,17 @@ class Board:
                 win_type = "Cat's Game"
         return self.winner, win_type, win_index
 
+    def check_board_open(self):
+        count = 0
+        for row in range(0,3):
+            for col in range(0,3):
+                if self.board[row][col] is None:
+                    return True
+                else:
+                    count += 1
+        if count == 9:
+            return False
+
     def print_board(self):
         for row in range(0,3):
             print(self.board[row])
@@ -130,14 +141,3 @@ class GameBoard(Board):
 
     def get_board(self, inner_square_ordinal):
         return self.gameboard[inner_square_ordinal]
-    
-    def check_outer_board_open(self):
-        count = 0
-        for row in range(0,3):
-            for col in range(0,3):
-                if self.outer_board.board[row][col] is None:
-                    return True
-                else:
-                    count += 1
-        if count == 9:
-            return False
